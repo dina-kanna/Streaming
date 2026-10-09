@@ -4,6 +4,7 @@ import { Route, Routes } from "react-router-dom";
 import Navbar from "./components/Navbar.jsx";
 import Footer from "./components/Footer.jsx";
 import ScrollToTop from "./components/ScrollToTop.jsx";
+
 import Home from "./pages/Home.jsx";
 import Movies from "./pages/Movies.jsx";
 import TVShows from "./pages/TVShows.jsx";
@@ -15,24 +16,14 @@ import Signup from "./pages/Signup.jsx";
 import Profile from "./pages/Profile.jsx";
 import NotFound from "./pages/NotFound.jsx";
 
-import { useTheme } from "./context/ThemeContext.jsx";
-
 export default function App() {
-  const { darkMode } = useTheme();
-
   return (
-    <div
-      className={`flex min-h-screen flex-col font-sans transition-colors duration-300 ${
-        darkMode
-          ? "bg-noir-bg text-white"
-          : "bg-gray-50 text-gray-900"
-      }`}
-    >
+    <div className="flex min-h-screen flex-col bg-gray-50 font-sans text-gray-900 transition-colors duration-300 dark:bg-[#09090b] dark:text-white">
       <ScrollToTop />
 
       <Navbar />
 
-      <main className="mx-auto w-full max-w-[1500px] flex-1 px-4 py-6 sm:px-6 lg:px-10">
+      <main className="mx-auto w-full max-w-[1500px] flex-1 px-4 py-6 transition-colors duration-300 sm:px-6 lg:px-10">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/movies" element={<Movies />} />
@@ -43,7 +34,6 @@ export default function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>

@@ -1,5 +1,10 @@
 
-import { createContext, useContext, useEffect } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
 const ThemeContext = createContext({
   darkMode: true,
@@ -7,18 +12,31 @@ const ThemeContext = createContext({
 });
 
 export function ThemeProvider({ children }) {
-  useEffect(() => {
-    document.documentElement.classList.add("dark");
-    localStorage.setItem("theme", "dark");
-  }, []);
+  const [darkMode, setDarkMode] = useState(() => {
+    try {
+      return localStorage.getItem("theme") !== "light";
+    } catch {
+      return true;
+    }
+  });
 
-  const value = {
-    darkMode: true,
-    toggleTheme: () => {},
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark", darkMode);
+    document.body.classList.toggle("dark", darkMode);
+
+    try {
+      localStorage.setItem("theme", darkMode ? "dark" : "light");
+    } catch {
+      // The theme still works if browser storage is unavailable.
+    }
+  }, [darkMode]);
+
+  const toggleTheme = () => {
+    setDarkMode((current) => !current);
   };
 
   return (
-    <ThemeContext.Provider value={value}>
+    <ThemeContext.Provider value={{ darkMode, toggleTheme }}>
       {children}
     </ThemeContext.Provider>
   );
